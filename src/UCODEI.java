@@ -46,9 +46,11 @@ public class UCODEI {
 					}
 				}
 				mem.add(p);
-				System.out.println(p.getLabel()+" "+p.getOpcode()+" "+p.getP1()+" "+p.getP2()+" "+p.getP3());
 			}
 			
+			for (int i=0;i<mem.size();i++){
+				System.out.println(mem.get(i).getLabel()+" "+mem.get(i).getOpcode()+" "+mem.get(i).getP1()+" "+mem.get(i).getP2()+" "+mem.get(i).getP3());
+			}
 			fsc.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block

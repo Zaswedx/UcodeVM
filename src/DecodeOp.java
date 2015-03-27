@@ -7,6 +7,8 @@ public class DecodeOp {
 		case "proc":
 		case "sym":
 			return 3;
+		case "¿¬½À":
+			return 10;
 		}
 		
 		return 0;

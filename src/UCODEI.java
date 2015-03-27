@@ -12,7 +12,7 @@ public class UCODEI {
 		// TODO Auto-generated method stub
 		
 		@SuppressWarnings("rawtypes")
-		Stack stack = new Stack();
+		Stack<String> stack = new Stack<String>();
 		Frame f = new Frame();
 		FileDialog fd = new FileDialog(f,"Open",FileDialog.LOAD);
 		ArrayList<Instruction> mem = new ArrayList<Instruction>();
@@ -25,7 +25,7 @@ public class UCODEI {
 		File file = new File(fd.getDirectory()+fd.getFile());
 		try {
 			Scanner fsc = new Scanner(file);
-			while(fsc.hasNextLine()){
+			while(fsc.hasNextLine()){										//명령 전처리 부분
 				inst = fsc.nextLine();
 				String[] result =inst.split("\\s+");
 				Instruction p = new Instruction();
@@ -48,8 +48,9 @@ public class UCODEI {
 				mem.add(p);
 			}
 			
-			for (int i=0;i<mem.size();i++){
+			for (int i=0;i<mem.size();i++){									//명령 처리 루틴
 				System.out.println(mem.get(i).getLabel()+" "+mem.get(i).getOpcode()+" "+mem.get(i).getP1()+" "+mem.get(i).getP2()+" "+mem.get(i).getP3());
+				dp.setStack(stack, mem.get(i).getOpcode());
 			}
 			fsc.close();
 		} catch (FileNotFoundException e) {

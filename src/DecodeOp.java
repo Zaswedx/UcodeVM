@@ -7,8 +7,17 @@ public class DecodeOp {
 		case "proc":
 		case "sym":
 			return 3;
-		case "¿¬½À":
-			return 10;
+		case "lod":
+		case "str":
+		case "lda":
+			return 2;
+		case "ldc":
+		case "bgn":
+		case "call":
+		case "tjp":
+		case "fjp":
+		case "ujp":
+			return 1;
 		}
 		
 		return 0;

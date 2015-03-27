@@ -11,7 +11,6 @@ public class UCODEI {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		@SuppressWarnings("rawtypes")
 		Stack<String> stack = new Stack<String>();
 		Frame f = new Frame();
 		FileDialog fd = new FileDialog(f,"Open",FileDialog.LOAD);

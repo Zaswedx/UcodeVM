@@ -2,7 +2,7 @@ import java.util.Stack;
 
 
 public class DecodeOp {
-	public int getOrderLength(String opcode){
+	public int getOrderLength(String opcode){					//명령 길이 해석
 		switch(opcode.toLowerCase()){
 		case "proc":
 		case "sym":
@@ -23,7 +23,7 @@ public class DecodeOp {
 		return 0;
 	}
 	
-	public void setStack(Stack<String> stack,String opcode){
+	public void setStack(Stack<String> stack,String opcode){	//명령 연산
 		switch(opcode.toLowerCase()){
 		case "add":
 			String a = stack.pop();

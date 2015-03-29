@@ -33,4 +33,8 @@ public class DecodeOp {
 			break;
 		}
 	}
+	
+	public void setVar(Stack<String> vstack, String opcode){
+		
+	}
 }

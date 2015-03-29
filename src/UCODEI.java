@@ -15,6 +15,7 @@ public class UCODEI {
 		Frame f = new Frame();
 		FileDialog fd = new FileDialog(f,"Open",FileDialog.LOAD);
 		ArrayList<Instruction> mem = new ArrayList<Instruction>();
+		ArrayList<Variable> vmem = new ArrayList<Variable>();
 		DecodeOp dp = new DecodeOp();
 		String inst;
 		
@@ -39,6 +40,7 @@ public class UCODEI {
 						p.setP2(result[3]);
 					case 1 :
 						p.setP1(result[2]);
+					case 0 :
 						break;
 					default :
 						System.out.println("Error : 유효하지 않은 명령");	

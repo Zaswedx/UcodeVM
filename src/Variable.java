@@ -1,6 +1,6 @@
 
 public class Variable {
-	private int block, size, lexical;
+	private int block, size, s_num;
 	private String data;
 	public int getBlock() {
 		return block;
@@ -14,11 +14,11 @@ public class Variable {
 	public void setSize(int size) {
 		this.size = size;
 	}
-	public int getLexical() {
-		return lexical;
+	public int getS_num() {
+		return s_num;
 	}
-	public void setLexical(int lexical) {
-		this.lexical = lexical;
+	public void setS_num(int lexical) {
+		this.s_num = lexical;
 	}
 	public String getData() {
 		return data;

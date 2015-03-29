@@ -25,12 +25,16 @@ public class UCODEI {
 		File file = new File(fd.getDirectory()+fd.getFile());
 		try {
 			Scanner fsc = new Scanner(file);
+			int itr = -1,cnt = 0,floor = 0;
 			while(fsc.hasNextLine()){										//명령 전처리
 				inst = fsc.nextLine();
 				String[] result =inst.split("\\s+");
 				Instruction p = new Instruction();
 
 				if (result.length>1){
+					if (result[1].equals("proc")) floor++;
+					else if (result[1].equals("end")) floor--;
+					else if (floor==0 && itr == -1) itr = cnt;
 					p.setLabel(result[0]);
 					p.setOpcode(result[1]);
 					switch(dp.getOrderLength(result[1])){
@@ -47,11 +51,16 @@ public class UCODEI {
 					}
 				}
 				mem.add(p);
+				cnt++;
 			}
-			
-			for (int i=0;i<mem.size();i++){									//명령 처리
-				System.out.println(mem.get(i).getLabel()+" "+mem.get(i).getOpcode()+" "+mem.get(i).getP1()+" "+mem.get(i).getP2()+" "+mem.get(i).getP3());
-				dp.setStack(stack, mem.get(i).getOpcode());
+			floor = 0;
+			while(true){									//명령 처리
+//				System.out.println(mem.get(i).getLabel()+" "+mem.get(i).getOpcode()+" "+mem.get(i).getP1()+" "+mem.get(i).getP2()+" "+mem.get(i).getP3());
+//				dp.setStack(stack, mem.get(i).getOpcode());
+				System.out.println(mem.get(itr).getOpcode());
+				if (mem.get(itr).getOpcode().equals("end")&&floor == 0) break;
+				itr++;
+				if (itr>=cnt-1) itr = 0;
 			}
 			fsc.close();
 		} catch (FileNotFoundException e) {

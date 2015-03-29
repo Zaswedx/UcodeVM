@@ -1,8 +1,9 @@
+import java.util.ArrayList;
 import java.util.Stack;
 import java.util.EmptyStackException;
 
 public class DecodeOp {
-	public int getOrderLength(String opcode){					//��� ���� �ؼ�
+	public int getOrderLength(String opcode){					//占쏙옙占� 占쏙옙占쏙옙 占쌔쇽옙
 		switch(opcode.toLowerCase()){
 		case "proc":
 		case "sym":
@@ -23,7 +24,7 @@ public class DecodeOp {
 		return 0;
 	}
 	
-	public void setStack(Stack<String> stack,String opcode){	//��� ����
+	public void setStack(Stack<String> stack,String opcode){	//占쏙옙占� 占쏙옙占쏙옙
 		int temp;
 		try{
 			switch(opcode.toLowerCase()){
@@ -124,7 +125,15 @@ public class DecodeOp {
 		}
 	}
 	
-	public void setVar(Stack<String> vstack, String opcode){
-		
+	public void setVar(ArrayList<Variable> vmem, Instruction p){
+		Variable v = new Variable();
+		switch(p.getOpcode()){
+		case "sym" :
+			v.setBlock(Integer.valueOf(p.getP1()));
+			v.setS_num(Integer.valueOf(p.getP2()));
+			v.setSize(Integer.valueOf(p.getP3()));
+			vmem.add(v);
+			break;
+		}
 	}
 }

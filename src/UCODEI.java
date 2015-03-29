@@ -24,7 +24,7 @@ public class UCODEI {
 		File file = new File(fd.getDirectory()+fd.getFile());
 		try {
 			Scanner fsc = new Scanner(file);
-			while(fsc.hasNextLine()){										//¸í·É ÀüÃ³¸® ºÎºĞ
+			while(fsc.hasNextLine()){										//ï¿½ï¿½ï¿½ ï¿½ï¿½Ã³ï¿½ï¿½ ï¿½Îºï¿½
 				inst = fsc.nextLine();
 				String[] result =inst.split("\\s+");
 				Instruction p = new Instruction();
@@ -41,13 +41,13 @@ public class UCODEI {
 						p.setP1(result[2]);
 						break;
 					default :
-						System.out.println("Error : À¯È¿ÇÏÁö ¾ÊÀº ¸í·É");	
+						System.out.println("Error : ìœ íš¨í•˜ì§€ ì•Šì€ ëª…ë ¹");	
 					}
 				}
 				mem.add(p);
 			}
 			
-			for (int i=0;i<mem.size();i++){									//¸í·É Ã³¸® ·çÆ¾
+			for (int i=0;i<mem.size();i++){									//ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½Æ¾
 				System.out.println(mem.get(i).getLabel()+" "+mem.get(i).getOpcode()+" "+mem.get(i).getP1()+" "+mem.get(i).getP2()+" "+mem.get(i).getP3());
 				dp.setStack(stack, mem.get(i).getOpcode());
 			}

@@ -69,7 +69,9 @@ public class UCODEI {
 			}
 			//***********************//>
 			currentLn = itr;		// I can't get 'bgn' point so I use yours 
-			//***********************//
+									// answer : all 'proc' have 'end', also end's nextline is 'proc' or 'bgn'.
+									// so we find 'bgn' point through use 3 varible(cnt, floor, itr). itr = bgn's line number.
+			//***********************// it's jaehun's idea~! 
 			/*
 			floor = 0;
 			while(true){									//��� ó��

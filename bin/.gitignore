@@ -5,3 +5,5 @@
 /arrayTest.uco
 /Label.class
 /Label$LabelElem.class
+/CallStack.class
+/CallStack$Node.class

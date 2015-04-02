@@ -23,7 +23,7 @@ public class DecodeOp {
 		
 		return 0;
 	}
-	
+	// I changed your method name. I'm sorry but I think this name is more appropriate
 	public void execute(Stack<Integer> stack,String opcode){	//占쏙옙占� 占쏙옙占쏙옙
 		int temp;
 		try{

@@ -1,9 +1,7 @@
 /DecodeOp.class
 /Instruction.class
+/Label$LabelElem.class
+/Label.class
 /UCODEI.class
 /Variable.class
 /arrayTest.uco
-/Label.class
-/Label$LabelElem.class
-/CallStack.class
-/CallStack$Node.class

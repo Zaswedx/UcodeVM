@@ -23,103 +23,104 @@ public class DecodeOp {
 		
 		return 0;
 	}
-	// I changed your method name. I'm sorry but I think this name is more appropriate
-	public void execute(Stack<Integer> stack,String opcode){	//�뜝�룞�삕�뜝占� �뜝�룞�삕�뜝�룞�삕
+	
+	public void execute(Stack<String> stack,String opcode){	
 		int temp;
 		try{
 			switch(opcode.toLowerCase()){
 			// Unary
 			case "notop":
-				temp = stack.pop();
+				temp = Integer.parseInt(stack.pop());
 				if(temp!=0) 	temp = 0;
 				else			temp = 1;
-				stack.push(temp);
+				stack.push(String.valueOf(temp));
 				break;
 			case "neg":
-				temp = stack.pop();
+				temp = Integer.parseInt(stack.pop());
 				temp = -temp;
-				stack.push(temp);
+				stack.push(String.valueOf(temp));
 				break;
 			case "inc":
-				temp = stack.pop();
+				temp = Integer.parseInt(stack.pop());
 				temp++;
-				stack.push(temp);
+				stack.push(String.valueOf(temp));
 				break;
 			case "dec":
-				temp = stack.pop();
+				temp = Integer.parseInt(stack.pop());
 				temp--;
-				stack.push(temp);
+				stack.push(String.valueOf(temp));
 				break;
 			case "dup":
-				temp = stack.pop();
-				stack.push(temp);
-				stack.push(temp);
+				temp = Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp));
+				stack.push(String.valueOf(temp));
 				break;
 			// Binary
 			case"add":
-				temp = stack.pop()+stack.pop();
-				stack.push(temp);
+				temp = Integer.parseInt(stack.pop())+Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp));
 				break;
 			case "sub":
-				temp = stack.pop()-stack.pop();
-				stack.push(temp);
+				temp = Integer.parseInt(stack.pop())-Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp));
 				break;
 			case "mult":
-				temp = stack.pop()*stack.pop();
-				stack.push(temp);
+				temp = Integer.parseInt(stack.pop())*Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp));
 				break;
 			case "div":
-				temp = stack.pop()/stack.pop();
-				stack.push(temp);
+				temp = Integer.parseInt(stack.pop())/Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp));
 				break;
 			case "mod":
-				temp = stack.pop()%stack.pop();
-				stack.push(temp);
+				temp = Integer.parseInt(stack.pop())%Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp));
 				break;
 			case "swp":	
-				int temp2 = stack.pop();	
-				temp = stack.pop();
-				stack.push(temp2);
-				stack.push(temp);
+				int temp2 = Integer.parseInt(stack.pop());	
+				temp = Integer.parseInt(stack.pop());
+				stack.push(String.valueOf(temp2));
+				stack.push(String.valueOf(temp));
 				break;
 			case "and":	
-				temp = stack.pop()*stack.pop();
+				temp = Integer.parseInt(stack.pop())*Integer.parseInt(stack.pop());
 				if(temp!=0)  	temp = 1;
 				else			temp = 0;
-				stack.push(temp);
+				stack.push(String.valueOf(temp));
 				break;
 			case "or":
-				temp = stack.pop();
-				int temp1 = stack.pop();
-				if(temp==0&&temp1==0)	stack.push(0);
-				else						stack.push(1);
+				temp = Integer.parseInt(stack.pop());
+				int temp1 = Integer.parseInt(stack.pop());
+				if(temp==0&&temp1==0)	stack.push(String.valueOf(0));
+				else						stack.push(String.valueOf(1));
 				break;
 			// comparison operation -> if(stack[top] (compare) stack[top-1])	statement;
 			case "gt":
-				if(stack.pop()<stack.pop())	stack.push(1);
-				else							stack.push(0);
+				if(Integer.parseInt(stack.pop())<Integer.parseInt(stack.pop()))	stack.push(String.valueOf(1));
+				else																		stack.push(String.valueOf(0));
 				break;
 			case "lt":
-				if(stack.pop()>stack.pop())	stack.push(1);
-				else							stack.push(0);
+				if(Integer.parseInt(stack.pop())>Integer.parseInt(stack.pop()))	stack.push(String.valueOf(1));
+				else																		stack.push(String.valueOf(0));
 				break;
 			case "ge":
-				if(stack.pop()<=stack.pop())	stack.push(1);
-				else								stack.push(0);
+				if(Integer.parseInt(stack.pop())<=Integer.parseInt(stack.pop()))	stack.push(String.valueOf(1));
+				else																		stack.push(String.valueOf(0));
 				break;
 			case "le":
-				if(stack.pop()>=stack.pop())	stack.push(1);
-				else								stack.push(0);
+				if(Integer.parseInt(stack.pop())>=Integer.parseInt(stack.pop()))	stack.push(String.valueOf(1));
+				else																		stack.push(String.valueOf(0));
 				break;
 			case "eq":
-				if(stack.pop()==stack.pop())	stack.push(1);
-				else								stack.push(0);
+				if(Integer.parseInt(stack.pop())==Integer.parseInt(stack.pop()))	stack.push(String.valueOf(1));
+				else																		stack.push(String.valueOf(0));
 				break;
 			case "ne":
-				if(stack.pop()!=stack.pop())	stack.push(1);
-				else								stack.push(0);
+				if(Integer.parseInt(stack.pop())!=Integer.parseInt(stack.pop()))	stack.push(String.valueOf(1));
+				else																		stack.push(String.valueOf(0));
 				break;
 			}
+			
 		} catch(EmptyStackException e){
 			e.printStackTrace();
 		}

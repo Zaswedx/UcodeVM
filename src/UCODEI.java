@@ -16,22 +16,21 @@ public class UCODEI {
 		Frame f = new Frame();
 		FileDialog fd = new FileDialog(f,"Open",FileDialog.LOAD);
 		ArrayList<Instruction> mem = new ArrayList<Instruction>();
-		//ArrayList<Variable> vmem = new ArrayList<Variable>();
+		//ArrayList<Variable> vmem = new ArrayList<Variable>();				
 		DecodeOp dp = new DecodeOp();
 		String inst;
 		
 		int currentLn=0;					// num of line executing now
-		int tempLn=0, ldpLine = 0;				// num of line for confirming range
+		int tempLn=0, ldpLine = 0;		// num of line for confirming range
 		boolean breakPlag=false,			// break plag for while loop
-				ldpFlag = false;			
-		Label label = new Label();		// data struct for storing label
+				 ldpFlag = false;			
+		Label label = new Label();		// data structure for storing label
 		Instruction curInstr;			// Instruction object for
-		//***********************//>		
-		Stack<int[]> callStack = new Stack<int[]>();		// integer array Stack for call operation
-		Stack<Integer> exStack = new Stack<Integer>();	// integer Stack for execution
+		
 		HashMap<String, String> memory = new HashMap<String, String>();
+		Stack<int[]> callStack = new Stack<int[]>();		// integer array Stack for call operation
+		Stack<String> exStack = new Stack<String>();		// integer Stack for execution
 		int pcNsp[] = {0,0};									// integer array for pc, sp
-		//***********************//
 		
 		fd.setFile(".uco");
 		fd.setVisible(true);
@@ -39,10 +38,15 @@ public class UCODEI {
 		File file = new File(fd.getDirectory()+fd.getFile());
 		try {
 			Scanner fsc = new Scanner(file);
-			int itr = -1,cnt = 0,floor = 0;
-			while(fsc.hasNextLine()){										//占쏙옙占� 占쏙옙처占쏙옙
+			// I guess 
+			// 'cnt' is just current line number when it assembling codes
+			// and 'floor' is level of scope
+			// then, is 'itr' just means 'bgn' line? 
+			int itr = -1,cnt = 0,floor = 0;		
+			while(fsc.hasNextLine()){						
 				inst = fsc.nextLine();
-				String[] result =inst.split("\\s+");
+				String[] result =inst.split("\\s+"); 
+				// how about replace above two lines to " String[] result = fsc.nextLine().split("\\s+"); " ?? 
 				Instruction p = new Instruction();
 
 				if (result.length>1){
@@ -63,14 +67,14 @@ public class UCODEI {
 					default :
 						System.out.println("Error : it is error msg ");	
 					}
-					// is there label? add to label(in 'labelBox' of 'Label' class)
+					// is there label? add to label object (in 'labelBox' of 'Label' class)
 					if(!p.getLabel().equals("")) label.addLabel(p.getLabel(), currentLn);
 				}
 				currentLn++;		// increase current line
 				mem.add(p);
 				cnt++;
 			}
-			currentLn = itr;		// thanks for your explanation jae-hun
+			currentLn = itr;		
 			floor = 0;
 
 			while(true){				// while loop for executing operations in order
@@ -79,34 +83,31 @@ public class UCODEI {
 				System.out.println(curInstr.getLabel()+"\t"+curInstr.getOpcode()+" "+curInstr.getP1()+" "+curInstr.getP2()+" "+curInstr.getP3());
 	
 				switch(curInstr.getOpcode()){
-				//***********************//>
 				case "ldp":		// when ldp occurs,
 					pcNsp[1] = exStack.size();	// check the stack point
 					ldpFlag = true;
 					ldpLine = 0;
 					currentLn++;
 					break;
-				//***********************//
 				case "lod":
 					if (curInstr.getP1().equals("2")){
-						exStack.push(Integer.parseInt(memory.get(String.valueOf(floor)+"x"+curInstr.getP2())));
+						exStack.push(memory.get(String.valueOf(floor)+"x"+curInstr.getP2()));
 					}else if (curInstr.getP1().equals("1")){
-						exStack.push(Integer.parseInt(memory.get("0x"+curInstr.getP2())));
+						exStack.push(memory.get("0x"+curInstr.getP2()));
 					}
 					if (ldpFlag) ldpLine++;
 					currentLn++;
 					break;
 				case "lda":
 					if (curInstr.getP1().equals("2")){
-						exStack.push(Integer.parseInt(memory.get(String.valueOf(floor)+"x"+curInstr.getP2())));
+						exStack.push(memory.get(String.valueOf(floor)+"x"+curInstr.getP2()));
 					}else if (curInstr.getP1().equals("1")){
-						exStack.push(Integer.parseInt(memory.get("0x"+curInstr.getP2())));
+						exStack.push(memory.get("0x"+curInstr.getP2()));
 					}
 					if (ldpFlag) ldpLine++;
 					currentLn++;
 					break;
 				case "call":
-					//***********************//>
 					pcNsp[0] = currentLn;
 					ldpFlag = false;
 					if(curInstr.getP1().equals("write")){ 		// implement write operation
@@ -114,32 +115,43 @@ public class UCODEI {
 						currentLn++; 
 						break;
 					}
-					//***********************//
-					// find label's line number
-					tempLn = label.findLabel(curInstr.getP1());
+					
+					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
 					floor++;
-					// if there is no label it returns -1
-					if(tempLn<0){
+					
+					if(tempLn<0){					// if there is no label it returns -1
 						System.out.println("no label found error");
 					}
 					else{
-						//***********************//>
 						callStack.push(pcNsp);	// push current line number and stack point
-						//***********************//
-						currentLn = tempLn;			// and jump!!
+						currentLn = tempLn;		// and jump!!
 					}
 					break;
-				case "ujp":
-				case "tjp":
+				//********JUMP*********//>
 				case "fjp":
-					// find label's line number
-					tempLn = label.findLabel(curInstr.getP1());
-					// if there is no label it returns -1
-					if(tempLn<0){
+					if(!exStack.pop().equals("0")) break;
+					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
+					if(tempLn<0){	// if there is no label it returns -1
 						System.out.println("no label found error");
 					}
 					else currentLn = tempLn;		// jump!!!
 					break;
+				case "tjp":
+					if(exStack.pop().equals("0")) break;
+					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
+					if(tempLn<0){	// if there is no label it returns -1
+						System.out.println("no label found error");
+					}
+					else currentLn = tempLn;		// jump!!!
+					break;
+				case "ujp":
+					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
+					if(tempLn<0){	// if there is no label it returns -1
+						System.out.println("no label found error");
+					}
+					else currentLn = tempLn;		// jump!!!
+					break;
+				//************************//
 				case "sym":
 					for (int i=Integer.parseInt(curInstr.getP2());i<Integer.parseInt(curInstr.getP2())+Integer.parseInt(curInstr.getP3());i++){
 						String tempString = String.valueOf(floor) + "x" + String.valueOf(i);
@@ -149,19 +161,29 @@ public class UCODEI {
 					break;
 				case "end":
 					if(callStack.isEmpty()) breakPlag = true;		// if there is no point to return, change plag to true for breaking loop
-					//***********************//>
-					else{
-						pcNsp = callStack.pop();			// pop call stack and get int array
+					else{												// clear the useless local variable 
+						pcNsp = callStack.pop();			// pop call stack and get integer array
 						currentLn = pcNsp[0];			// if there are some point to return, jump!! 
 						while(exStack.size()!=pcNsp[1]){ exStack.pop(); }	// pop all of elements for post area
 					}
 					floor--;
-					//***********************//
-				default:				// if no jump required, then read next line
-					//***********************//>
-					// I changed your method name. I'm sorry but I think this name is more appropriate
-					dp.execute(exStack, curInstr.getOpcode());			
-					//***********************//
+				//************************//>
+				case "ldi":
+				case "sti":
+					// I don't know how I can access Memory by address
+					break;
+				case "retv":
+					pcNsp[1]++;
+					break;
+				case "chkl":
+					if(Integer.parseInt(exStack.pop())>Integer.parseInt(curInstr.getP1())) System.out.println("Error!!");
+					break;
+				case "chkh":
+					if(Integer.parseInt(exStack.pop())<Integer.parseInt(curInstr.getP1())) System.out.println("Error!!");
+					break;
+				//************************//
+				default:				// when it just need to exStack operation
+					dp.execute(exStack, curInstr.getOpcode());
 					currentLn++;										
 					break;
 				}

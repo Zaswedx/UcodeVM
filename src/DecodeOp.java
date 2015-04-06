@@ -85,7 +85,8 @@ public class DecodeOp {
 				else	System.out.println("ERROR - sum of addresses is banned!!");
 				break;
 			case "sub":
-				temp = Integer.parseInt(stack.pop())-Integer.parseInt(stack.pop());
+				temp = Integer.parseInt(stack.pop());
+				temp = Integer.parseInt(stack.pop())-temp;
 				stack.push(String.valueOf(temp));
 				break;
 			case "mult":
@@ -93,11 +94,13 @@ public class DecodeOp {
 				stack.push(String.valueOf(temp));
 				break;
 			case "div":
-				temp = Integer.parseInt(stack.pop())/Integer.parseInt(stack.pop());
+				temp = Integer.parseInt(stack.pop());
+				temp = Integer.parseInt(stack.pop())/temp;
 				stack.push(String.valueOf(temp));
 				break;
 			case "mod":
-				temp = Integer.parseInt(stack.pop())%Integer.parseInt(stack.pop());
+				temp = Integer.parseInt(stack.pop());
+				temp = Integer.parseInt(stack.pop())%temp;
 				stack.push(String.valueOf(temp));
 				break;
 			case "swp":	

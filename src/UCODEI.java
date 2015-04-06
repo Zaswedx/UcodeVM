@@ -29,7 +29,8 @@ public class UCODEI {
 		
 		HashMap<String, String> memory = new HashMap<String, String>();
 		Stack<int[]> callStack = new Stack<int[]>();		// integer array Stack for call operation
-		Stack<String> exStack = new Stack<String>();		// integer Stack for execution
+		Stack<String> exStack = new Stack<String>();		// String Stack for execution
+		Stack<String> paramStack = new Stack<String>();	// String Stack for 
 		int pcNsp[] = {0,0};									// integer array for pc, sp
 		
 		fd.setFile(".uco");
@@ -71,7 +72,7 @@ public class UCODEI {
 					if(!p.getLabel().equals("")) label.addLabel(p.getLabel(), currentLn);
 				}
 				currentLn++;		// increase current line
-				mem.add(p);
+				mem.add(p);	// when ldp occurs,
 				cnt++;
 			}
 			
@@ -81,7 +82,7 @@ public class UCODEI {
 			while(true){				// while loop for executing operations in order
 				curInstr = mem.get(currentLn);		// get Instruction object of current line
 				// print out current line
-				System.out.println(curInstr.getLabel()+"\t"+curInstr.getOpcode()+" "+curInstr.getP1()+" "+curInstr.getP2()+" "+curInstr.getP3());
+				// System.out.println(curInstr.getLabel()+"\t"+curInstr.getOpcode()+" "+curInstr.getP1()+" "+curInstr.getP2()+" "+curInstr.getP3());
 				
 				switch(curInstr.getOpcode()){
 				case "ldp":		// when ldp occurs,
@@ -123,6 +124,7 @@ public class UCODEI {
 				case "call":
 					pcNsp[0] = currentLn;
 					ldpFlag = false;
+					
 					if(curInstr.getP1().equals("write")){ 		// implement write operation
 						System.out.println(exStack.pop());		// by println function
 						currentLn++; 
@@ -139,6 +141,7 @@ public class UCODEI {
 						callStack.push(pcNsp);	// push current line number and stack point
 						currentLn = tempLn;		// and jump!!
 					}
+					for(int i=0;i<ldpLine;i++)	paramStack.push(exStack.pop());
 					break;
 				//********JUMP*********//>
 				case "fjp":
@@ -173,7 +176,7 @@ public class UCODEI {
 				//************************//
 				case "sym":
 					if(ldpLine>0){
-						memory.put(String.valueOf(floor)+"x"+curInstr.getP2(), exStack.pop());
+						memory.put(String.valueOf(floor)+"x"+curInstr.getP2(), paramStack.pop());
 						ldpLine--;
 					}
 					else{
@@ -223,10 +226,12 @@ public class UCODEI {
 					break;
 				}
 				if(breakPlag) break;
+				/*
 				String[] showList = new String[10];
 				exStack.copyInto(showList);
 				for(int i=0;i<exStack.size();i++)		System.out.print(showList[i]+"\t");
 				System.out.print("\n");
+				*/
 			}
 			fsc.close();
 		} catch (FileNotFoundException e) {

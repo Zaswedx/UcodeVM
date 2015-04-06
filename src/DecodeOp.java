@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.Stack;
 import java.util.EmptyStackException;
 
@@ -57,25 +56,25 @@ public class DecodeOp {
 				stack.push(String.valueOf(temp));
 				break;
 			// Binary
-			case"add":
-				splitKey0 = stack.pop().split("x");
+			case"add":		// add OP should handle sum of address and constant 
+				splitKey0 = stack.pop().split("x");	
 				splitKey1 = stack.pop().split("x");
-				if(splitKey0.length==1){
-					if(splitKey1.length==1){
+				if(splitKey0.length==1){			// if splitKey0 is constant
+					if(splitKey1.length==1){			// and splitKey1 is constant
 						temp = Integer.parseInt(splitKey0[0]) + Integer.parseInt(splitKey1[0]);
-						stack.push(String.valueOf(temp));
+						stack.push(String.valueOf(temp));	// just add and push
 					}
-					else{
-						temp = Integer.parseInt(splitKey0[0])+Integer.parseInt(splitKey1[1]);
-						if(temp<0){ 
+					else{							// else splitKey1 is address
+						temp = Integer.parseInt(splitKey0[0])+Integer.parseInt(splitKey1[1]);	// constant key0 + offset of key1
+						if(temp<0){ 					
 							System.out.println("ERROR - out of hash map key range!!");
 							break;
 						}
 						stack.push(splitKey1[0]+"x"+String.valueOf(temp));
 					}
 				}
-				else if(splitKey1.length==1){
-					temp = Integer.parseInt(splitKey1[0])+Integer.parseInt(splitKey0[1]);
+				else if(splitKey1.length==1){	// if splitKey0 is address and splitKey is constant
+					temp = Integer.parseInt(splitKey1[0])+Integer.parseInt(splitKey0[1]);		// constant key1 + offset of key0
 					if(temp<0){
 						System.out.println("ERROR - out of hash map key range!!");
 						break;

@@ -26,6 +26,7 @@ public class DecodeOp {
 	
 	public void execute(Stack<String> stack,String opcode){	
 		int temp;
+		String[] splitKey0,splitKey1;
 		try{
 			switch(opcode.toLowerCase()){
 			// Unary
@@ -57,8 +58,31 @@ public class DecodeOp {
 				break;
 			// Binary
 			case"add":
-				temp = Integer.parseInt(stack.pop())+Integer.parseInt(stack.pop());
-				stack.push(String.valueOf(temp));
+				splitKey0 = stack.pop().split("x");
+				splitKey1 = stack.pop().split("x");
+				if(splitKey0.length==1){
+					if(splitKey1.length==1){
+						temp = Integer.parseInt(splitKey0[0]) + Integer.parseInt(splitKey1[0]);
+						stack.push(String.valueOf(temp));
+					}
+					else{
+						temp = Integer.parseInt(splitKey0[0])+Integer.parseInt(splitKey1[1]);
+						if(temp<0){ 
+							System.out.println("ERROR - out of hash map key range!!");
+							break;
+						}
+						stack.push(splitKey1[0]+"x"+String.valueOf(temp));
+					}
+				}
+				else if(splitKey1.length==1){
+					temp = Integer.parseInt(splitKey1[0])+Integer.parseInt(splitKey0[1]);
+					if(temp<0){
+						System.out.println("ERROR - out of hash map key range!!");
+						break;
+					}
+					stack.push(splitKey0[0]+"x"+String.valueOf(temp));
+				}
+				else	System.out.println("ERROR - sum of addresses is banned!!");
 				break;
 			case "sub":
 				temp = Integer.parseInt(stack.pop())-Integer.parseInt(stack.pop());

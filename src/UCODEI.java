@@ -93,26 +93,32 @@ public class UCODEI {
 					currentLn++;
 					break;
 				case "lod":
-					if (curInstr.getP1().equals("2")){							// if this block is local
-						exStack.push(memory.get(String.valueOf(floor)+"x"+curInstr.getP2()));		// address is lexical level + "x" + offset number
-					}else if (curInstr.getP1().equals("1")){					// if this block is global
-						exStack.push(memory.get("0x"+curInstr.getP2()));								// address is "0x" + offset number
+					if (curInstr.getP1().equals("1")){							// if this block is local
+						exStack.push(memory.get("0x"+curInstr.getP2()));		// address is "0x" + offset number			
+					}else{															// if this block is global
+						exStack.push(memory.get(String.valueOf(floor)+"x"+curInstr.getP2()));		// address is lexical level + "x" + offset number							
 					}
 					if (ldpFlag) ldpLine++;
 					currentLn++;
 					break;
 				case "lda":
-					if (curInstr.getP1().equals("2")){
-						exStack.push(String.valueOf(floor)+"x"+curInstr.getP2());
-					}else if (curInstr.getP1().equals("1")){
+					if (curInstr.getP1().equals("1")){
 						exStack.push("0x"+curInstr.getP2());
+					}else{
+						exStack.push(String.valueOf(floor)+"x"+curInstr.getP2());
 					}
 					if (ldpFlag) ldpLine++;
 					currentLn++;
 					break;
 				case "str":
-					String assemKey = String.valueOf(floor)+"x"+curInstr.getP2();
-					memory.put(assemKey, exStack.pop());
+					String assemKey; 
+					if(curInstr.getP1().equals("1")){
+						assemKey = String.valueOf("0x"+curInstr.getP2());
+						memory.put(assemKey, exStack.pop());
+					} else{
+						assemKey = String.valueOf(floor)+"x"+curInstr.getP2();
+						memory.put(assemKey, exStack.pop());
+					}
 					currentLn++;
 					break;
 				case "sym":
@@ -179,6 +185,27 @@ public class UCODEI {
 					
 					if(curInstr.getP1().equals("write")){ 		// implement write operation
 						System.out.println(exStack.pop());		// by println function
+						currentLn++; 
+						break;
+					} else if(curInstr.getP1().equals("read")){
+						Scanner scan = new Scanner(System.in);
+						System.out.print("INPUT : ");
+						String[] splitKey = exStack.pop().split("x");
+						if(splitKey.length!=2){
+							System.out.println("ERROR!! Stack[top] should be address!!");
+							break;
+						}
+						else{
+							if(Integer.parseInt(splitKey[1])<1){
+								System.out.println("ERROR!! address is out of range");
+								break;
+							}
+							memory.put(splitKey[0]+"x"+splitKey[1],scan.nextLine());
+						}
+						currentLn++; 
+						break;
+					} else if(curInstr.getP1().equals("lf")){
+						System.out.println("");
 						currentLn++; 
 						break;
 					}

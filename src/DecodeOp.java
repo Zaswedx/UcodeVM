@@ -57,8 +57,8 @@ public class DecodeOp {
 				break;
 			// Binary
 			case"add":		// add OP should handle sum of address and constant 
-				splitKey0 = stack.pop().split("x");	
-				splitKey1 = stack.pop().split("x");
+				splitKey0 = stack.pop().split("x");		
+				splitKey1 = stack.pop().split("x");	
 				if(splitKey0.length==1){			// if splitKey0 is constant
 					if(splitKey1.length==1){			// and splitKey1 is constant
 						temp = Integer.parseInt(splitKey0[0]) + Integer.parseInt(splitKey1[0]);

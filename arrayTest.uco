@@ -10,6 +10,9 @@ main       proc  101 2 2
            lda   2 1
            call  getElt
            str   2 101
+           ldp
+           lda   2 101
+           call  read
            ldp   
            lod   2 101
            call  write

@@ -34,7 +34,9 @@ public class UCODEI {
 		Stack<String> exStack = new Stack<String>();		// String Stack for execution
 		Stack<String> paramStack = new Stack<String>();	// String Stack for 
 		
-		int pcNsp[] = {0,0};									// integer array for pc, sp
+		int pcNsp[]= new int[2];								// integer array for pc, sp
+		pcNsp[0]= 0;
+		pcNsp[1]= 1;
 		
 		fd.setFile(".uco");
 		fd.setVisible(true);
@@ -187,7 +189,7 @@ public class UCODEI {
 						System.out.println(exStack.pop());		// by println function
 						currentLn++; 
 						break;
-					} else if(curInstr.getP1().equals("read")){
+					} else if(curInstr.getP1().equals("read")){// implement read operation
 						Scanner scan = new Scanner(System.in);
 						System.out.print("INPUT : ");
 						String[] splitKey = exStack.pop().split("x");
@@ -204,7 +206,7 @@ public class UCODEI {
 						}
 						currentLn++; 
 						break;
-					} else if(curInstr.getP1().equals("lf")){
+					} else if(curInstr.getP1().equals("lf")){	// implement line feed operation
 						System.out.println("");
 						currentLn++; 
 						break;
@@ -217,23 +219,29 @@ public class UCODEI {
 						System.out.println("no label found error");
 					}
 					else{
+						
 						callStack.push(pcNsp);	// push current line number and stack point
 						currentLn = tempLn;		// and jump!!
+						pcNsp = new int[2];
+						pcNsp[0]=pcNsp[1]=0;
 					}
 					for(int i=0;i<ldpLine;i++)	paramStack.push(exStack.pop());
 					break;
 				case "end":
-					if(callStack.isEmpty()) breakPlag = true;		// if there is no point to return, change plag to true for breaking loop
+					if(callStack.isEmpty()) breakPlag = true;		// if there is no point to return, change flag to true for breaking loop
 					else{												// clear the useless local variable 
-						pcNsp = callStack.pop();			// pop call stack and get integer array
-						currentLn = pcNsp[0]+1;			// if there are some points to return, jump!! 
+						pcNsp = callStack.pop();						// pop call stack and get integer array
+						currentLn = pcNsp[0]+1;						// if there are some points to return, jump!! 
 						while(exStack.size()!=pcNsp[1]){ exStack.pop(); }	// pop all of elements for post area
+						
 					}
 					floor--;
 					break;
 				
 				case "retv":
-					pcNsp[1]++;		// stack point +1, so 'end' operation can't clear out return value
+					int temp[] = 	callStack.pop();	// stack point +1, so 'end' operation can't clear out return value
+					temp[1]++;
+					callStack.push(temp);
 					currentLn++;
 					break;
 				//************************//
@@ -254,7 +262,6 @@ public class UCODEI {
 					break;
 				}
 				if(breakPlag) break;
-				
 			}
 			fsc.close();
 		} catch (FileNotFoundException e) {

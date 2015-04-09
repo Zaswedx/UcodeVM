@@ -277,7 +277,7 @@ public class UCODEI {
 				System.out.println("[Error] Stack[top] should be address.");
 				break;
 			case "Outofrange":
-				System.out.println("ERROR!! address is out of range");
+				System.out.println("[Error] Address is out of range");
 				break;
 			}
 		}

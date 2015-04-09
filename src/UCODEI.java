@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 import java.util.Stack;
 
+import javax.management.RuntimeErrorException;
+
 public class UCODEI {
 
 	public static void main(String[] args) {
@@ -43,6 +45,7 @@ public class UCODEI {
 		
 		File file = new File(fd.getDirectory()+fd.getFile());
 		try {
+			
 			Scanner fsc = new Scanner(file);
 			int itr = -1;			// 'itr' represents where the begin point is  
 			int floor = 0;		// 'floor' represents current lexical level
@@ -156,7 +159,7 @@ public class UCODEI {
 					}
 					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
 					if(tempLn<0){	// if there is no label it returns -1
-						System.out.println("no label found error");
+						throw new RuntimeErrorException(new Error("NoLabel"));
 					}
 					else currentLn = tempLn;		// jump!!!
 					break;
@@ -167,14 +170,14 @@ public class UCODEI {
 					}
 					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
 					if(tempLn<0){	// if there is no label it returns -1
-						System.out.println("no label found error");
+						throw new RuntimeErrorException(new Error("NoLabel"));
 					}
 					else currentLn = tempLn;		// jump!!!
 					break;
 				case "ujp":
 					tempLn = label.findLabel(curInstr.getP1());	// find label's line number
 					if(tempLn<0){	// if there is no label it returns -1
-						System.out.println("no label found error");
+						throw new RuntimeErrorException(new Error("NoLabel"));
 					}
 					else currentLn = tempLn;		// jump!!!
 					break;
@@ -194,13 +197,11 @@ public class UCODEI {
 						System.out.print("INPUT : ");
 						String[] splitKey = exStack.pop().split("x");
 						if(splitKey.length!=2){
-							System.out.println("ERROR!! Stack[top] should be address!!");
-							break;
+							throw new RuntimeErrorException(new Error("InputAdr"));
 						}
 						else{
 							if(Integer.parseInt(splitKey[1])<1){
-								System.out.println("ERROR!! address is out of range");
-								break;
+								throw new RuntimeErrorException(new Error("Outofrange"));
 							}
 							memory.put(splitKey[0]+"x"+splitKey[1],scan.nextLine());
 						}
@@ -216,7 +217,7 @@ public class UCODEI {
 					floor++;
 					
 					if(tempLn<0){					// if there is no label it returns -1
-						System.out.println("no label found error");
+						throw new RuntimeErrorException(new Error("NoLabel"));
 					}
 					else{
 						
@@ -266,7 +267,19 @@ public class UCODEI {
 			fsc.close();
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("[Error] Can't find file");
+		} catch (RuntimeErrorException ex){
+			switch(ex.getTargetError().getMessage()){
+			case "NoLabel":
+				System.out.println("[Error] No label");
+				break;
+			case "InputAdr" :
+				System.out.println("[Error] Stack[top] should be address.");
+				break;
+			case "Outofrange":
+				System.out.println("ERROR!! address is out of range");
+				break;
+			}
 		}
 	}
 }

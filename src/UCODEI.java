@@ -189,7 +189,8 @@ public class UCODEI {
 					ldpFlag = false;
 					
 					if(curInstr.getP1().equals("write")){ 		// implement write operation
-						System.out.println(exStack.pop());		// by println function
+						for (int i=0;i<ldpLine;i++)
+							System.out.println(exStack.pop());		// by println function
 						currentLn++; 
 						break;
 					} else if(curInstr.getP1().equals("read")){// implement read operation
